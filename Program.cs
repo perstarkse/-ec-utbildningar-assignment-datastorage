@@ -1,4 +1,5 @@
-﻿using ec_utbildningar_assignment_datastorage.Services;
+﻿using ec_utbildningar_assignment_datastorage.Contexts;
+using ec_utbildningar_assignment_datastorage.Services;
 
 namespace TicketManagementConsole
 {
@@ -6,8 +7,14 @@ namespace TicketManagementConsole
     {
         static void Main()
         {
+            var context = new DataContext();
+            // Remove the following line if you would like to use migrations to create the database instead.
+            context.Database.EnsureCreated();
+            context.Seed();
+
             while (true)
             {
+                Console.Clear();
                 Console.WriteLine("Welcome to the ticket management system.");
                 Console.WriteLine("The current system works best with managing a local database.");
                 Console.WriteLine("Please select an option:");

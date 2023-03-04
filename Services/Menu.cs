@@ -17,6 +17,7 @@ namespace ec_utbildningar_assignment_datastorage.Services
             bool isRunning = true;
             while (isRunning)
             {
+                Console.Clear();
                 Console.WriteLine("First you have to choose your user.");
                 Console.WriteLine("1. Choose an existing user.");
                 Console.WriteLine("2. Create a new user.");
@@ -28,6 +29,7 @@ namespace ec_utbildningar_assignment_datastorage.Services
                 switch (choice)
                 {
                     case "1":
+                        Console.Clear();
                         Console.WriteLine("Enter the email address of the customer:");
                         string email = Console.ReadLine();
                         var existingCustomer = context.Customers.FirstOrDefault(c => c.Email == email);
@@ -49,14 +51,17 @@ namespace ec_utbildningar_assignment_datastorage.Services
                             context.SaveChanges();
 
                             Console.WriteLine("New ticket created with ID {0}.", ticket.Id);
+                            ExitToMenu();
                             isRunning = false;
                         }
                         else
                         {
                             Console.WriteLine($"Could not find customer with email address {email}.");
+                            ExitToMenu();
                         }
                         break;
                     case "2":
+                        Console.Clear();
                         Console.WriteLine("Enter customer first name:");
                         string firstName = Console.ReadLine();
                         Console.WriteLine("Enter customer last name:");
@@ -93,6 +98,7 @@ namespace ec_utbildningar_assignment_datastorage.Services
                         context.SaveChanges();
 
                         Console.WriteLine("New ticket created with ID {0}.", ticket2.Id);
+                        ExitToMenu();
                         isRunning = false;
                         break;
                     case "3":
@@ -114,7 +120,7 @@ namespace ec_utbildningar_assignment_datastorage.Services
                     .Include(t => t.Status)
                     .Include(t => t.Customer)
                     .ToList();
-
+                Console.Clear();
                 Console.WriteLine("Existing tickets:");
                 foreach (var ticket in tickets)
                 {
@@ -129,6 +135,7 @@ namespace ec_utbildningar_assignment_datastorage.Services
                 {
                     Console.WriteLine("No tickets found.");
                 }
+                ExitToMenu();
             }
         }
 
@@ -136,6 +143,7 @@ namespace ec_utbildningar_assignment_datastorage.Services
         {
             using (var context = new DataContext())
             {
+                Console.Clear();
                 Console.WriteLine("Enter ticket ID:");
                 int id = int.Parse(Console.ReadLine());
                 var ticket = context.Tickets.FirstOrDefault(t => t.Id == id);
@@ -160,11 +168,13 @@ namespace ec_utbildningar_assignment_datastorage.Services
                 context.SaveChanges();
 
                 Console.WriteLine($"Ticket {ticket.Id} status updated to {status.Name}.");
+                ExitToMenu();
             }
         }
 
         public static void AddCommentToTicket()
         {
+            Console.Clear();
             Console.Write("Enter ticket ID: ");
             var ticketIdInput = Console.ReadLine();
 
@@ -199,17 +209,20 @@ namespace ec_utbildningar_assignment_datastorage.Services
                 context.SaveChanges();
 
                 Console.WriteLine($"Comment added to ticket {ticket.Id}.");
+                ExitToMenu();
             }
         }
 
         public static void ViewCommentsForTicket()
         {
+            Console.Clear();
             Console.Write("Enter ticket ID: ");
             var ticketIdInput = Console.ReadLine();
 
             if (!int.TryParse(ticketIdInput, out var ticketId))
             {
                 Console.WriteLine("Invalid ticket ID input.");
+                ExitToMenu();
                 return;
             }
 
@@ -220,6 +233,7 @@ namespace ec_utbildningar_assignment_datastorage.Services
                 if (ticket == null)
                 {
                     Console.WriteLine($"Ticket with ID {ticketId} not found.");
+                    ExitToMenu();
                     return;
                 }
 
@@ -230,16 +244,19 @@ namespace ec_utbildningar_assignment_datastorage.Services
                 {
                     Console.WriteLine($"{comment.CreatedTime} - {comment.Text}");
                 }
+                ExitToMenu();
             }
         }
         public static void ViewSpecificTicket()
         {
+            Console.Clear();
             Console.Write("Enter ticket ID: ");
             var ticketIdInput = Console.ReadLine();
 
             if (!int.TryParse(ticketIdInput, out var ticketId))
             {
                 Console.WriteLine("Invalid ticket ID input.");
+                ExitToMenu();
                 return;
             }
             using (var context = new DataContext())
@@ -249,6 +266,7 @@ namespace ec_utbildningar_assignment_datastorage.Services
                 if (ticket == null)
                 {
                     Console.WriteLine($"Ticket with ID {ticketId} not found.");
+                    ExitToMenu();
                     return;
                 }
 
@@ -265,7 +283,14 @@ namespace ec_utbildningar_assignment_datastorage.Services
                 {
                     Console.WriteLine($"{comment.CreatedTime} - {comment.Text}");
                 }
+                ExitToMenu();
             }
+        }
+
+        public static void ExitToMenu()
+        {
+            Console.Write("Press key to proceed.");
+            Console.ReadKey();
         }
     }
 }

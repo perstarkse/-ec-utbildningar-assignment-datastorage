@@ -23,7 +23,23 @@ namespace ec_utbildningar_assignment_datastorage.Contexts
         public DbSet<Ticket> Tickets { get; set; }
         public DbSet<Comment> Comments { get; set; }
         public DbSet<TicketStatus> TicketStatuses { get; set; }
+
+        public void Seed()
+        {
+            if (!TicketStatuses.Any())
+            {
+                TicketStatuses.AddRange(new[]
+                {
+                new TicketStatus { Name = "Not Started" },
+                new TicketStatus { Name = "In Progress" },
+                new TicketStatus { Name = "Completed" }
+            });
+                SaveChanges();
+            }
+        }
+
     }
+
 }
 
 
